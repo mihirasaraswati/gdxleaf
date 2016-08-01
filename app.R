@@ -10,7 +10,7 @@ library(leaflet)
 
 ###MAP Setup
 #read census shape file
-us.map <- readOGR(dsn="/home/shellbu/Dropbox/Rprojects/GDX_Analysis_2015/cb_2015_us_county_20m", layer="cb_2015_us_county_20m", verbose = FALSE)
+us.map <- readOGR(dsn=".", layer="cb_2015_us_county_20m", verbose = FALSE)
 
 # Remove Virgin Islands (78), American Samoa (60) Mariana Islands (69), Micronesia (64), Marshall Islands (68), Palau (70), Minor Islands (74), Alaska (02), Guam (66), Hawaii (15), Puerto Rico (72) == , "02", "72", "66", "15"
 us.map <- us.map[!us.map$STATEFP %in% c("78", "60", "69", "64", "68", "70", "74"),]
@@ -121,7 +121,7 @@ server <- function(input, output){
   
   #create a color palette
   pal <- reactive({
-    colorQuantile(gdxhelper$divpals[gdxvars == input$gdxvar],
+    colorQuantile(gdxhelper$divpals[gdxhelper$gdxvars == input$gdxvar],
                   domain = as.numeric(us.map@data[input$gdxvar][,1]),
                   n = 7)
   })
