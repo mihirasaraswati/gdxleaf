@@ -1,3 +1,11 @@
+/* custom css to control text width on About tab */
+div.abouttext {
+  max-width: 800px;
+  margin: auto;
+  padding: 1em;
+  line-height: 20px;
+}
+
 input[type="number"] {
   max-width: 80%;
 }
