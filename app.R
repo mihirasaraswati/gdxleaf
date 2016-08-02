@@ -20,7 +20,7 @@ us.map <- us.map[!us.map$STATEFP %in% c("78", "60", "69", "64", "68", "70", "74"
 
 ##DATA Setup
 #load the R data object of gdxcty - the FY10-15 consolidated, cleanedup, and linked to FIPS code
-gdxcty15 <- readRDS("gdxcty15.Rda") 
+gdxcty15 <- readRDS("gdxcty15.rds") 
 #DIVIDE by 1000 to make numbers in MILLIONS and then round all numbers (remove decimal places)
 gdxcty15[,8:17] <- round(gdxcty15[,8:17]/1000, digits = 2)
 

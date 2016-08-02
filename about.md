@@ -1,8 +1,6 @@
 ### Introduction
 
-Each year the [National Center for Veterans Analysis and Statistics (NCVAS)](http://www.va.gov/vetdata/) publishes a report on the Geographic Distribution of VA Expenditures (GDX). These reports provide a break-out of expenditures for key VA programs by State, County, and Congressional District and go as far back as 1996. You can view the [GDX reports and others on the NCVAS website.](http://www.va.gov/vetdata/Expenditures.asp) 
-
-This map-based exploration tool focuses exclusively on the 2015 data. 
+This map-based exploration tool provides a way to look at VA expenditures from fiscal year 2015. Each year the [National Center for Veterans Analysis and Statistics (NCVAS)](http://www.va.gov/vetdata/) publishes a report on the Geographic Distribution of VA Expenditures (GDX). These reports provide a break-out of expenditures for key VA programs by State, County, and Congressional District and go as far back as 1996. You can view the [GDX reports and others on the NCVAS website.](http://www.va.gov/vetdata/Expenditures.asp) 
 
 ### Expenditure Data Sources and Notes
 
