@@ -58,8 +58,7 @@ ui <- navbarPage("VA Expenditures in Fiscal Year 2015",
                           div(class="outer",
                               tags$head(
                                 # Include our custom CSS
-                                includeCSS("styles.css"),
-                                includeScript("gomap.js")
+                                includeCSS("styles.css")
                               ),
                               #display the leaflet map
                               leafletOutput("mymap", width="100%", height="100%"),
