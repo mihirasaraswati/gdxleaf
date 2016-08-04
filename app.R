@@ -22,7 +22,8 @@ us.map <- us.map[!us.map$STATEFP %in% c("78", "60", "69", "64", "68", "70", "74"
 #load the R data object of gdxcty - the FY10-15 consolidated, cleanedup, and linked to FIPS code
 gdxcty15 <- readRDS("gdxcty15.rds") 
 #DIVIDE by 1000 to make numbers in MILLIONS and then round all numbers (remove decimal places)
-gdxcty15[,8:17] <- round(gdxcty15[,8:17]/1000, digits = 2)
+#REMEMBER Expenditures are in 000s and VetPop and Uniques are as-is
+gdxcty15[,8:17] <- round(gdxcty15[,8:17], digits = 0)
 
 #Concatenate StateFP and CountyFP for a unique ID that can be matched with GEOID in us.map
 gdxcty15 <- mutate(gdxcty15, FIPS=paste(StateFP, CountyFP, sep="")) %>% 
@@ -31,6 +32,8 @@ gdxcty15 <- mutate(gdxcty15, FIPS=paste(StateFP, CountyFP, sep="")) %>%
 #As of FY15 - Shannon County SD (Fips: 46-113) is now Ogmerge(us.map, county_dat, by.x="GEOID", by.y="FIPS")alala-Lakota County (Fips: 46-102)
 gdxcty15$FIPS[gdxcty15$FIPS == "46113"] <- "46102"
 
+# gdxcty15$GOE[gdxcty15$GOE == 0] <- NA
+# gdxcty15$Cons[gdxcty15$Cons == 0] <- NA
 #this helper links the GDX variables to color schemes
 gdxhelper <- data.frame(
   gdxlabs = c("Total Expenditures",
@@ -43,7 +46,7 @@ gdxhelper <- data.frame(
               "Veteran Popuation",
               "Unique Patients"),
   gdxvars = names(gdxcty15[3:11]),
-  divpals = c("BrBG", "RdBu", "PiYG", "RdGy", "RdYlBu", "PRGn", "RdYlGn","PuOr", "Spectral"),
+  divpals = c("BrBG", "RdYlBu", "PiYG", "RdGy", "Blues", "PRGn", "RdYlGn","PuOr", "Spectral"),
   stringsAsFactors = FALSE)
 
 #merge the gdx data with the spatial object
@@ -106,6 +109,10 @@ server <- function(input, output){
   popup_dat <- reactive({
     paste0("<strong>County: </strong>",
            paste(us.map$NAME, ", ", us.map$State, sep=""),
+           "<br><b>Veteran Population: </b>",
+           trimws(format(round(us.map$VetPop, digits = 0), big.mark = ",")),
+           "<br><strong>Uniques: </strong>",
+           trimws(format(round(us.map$Uniques, digits = 0), big.mark = ",")),
            "<br><strong>Total: </strong>",
            trimws(format(round(us.map$TotX, digits = 0), big.mark = ",")),
            "<br><strong>Medical Care: </strong>",
@@ -120,50 +127,52 @@ server <- function(input, output){
            trimws(format(round(us.map$InsInd, digits = 0), big.mark = ",")),
            "<br><strong>Operations: </strong>",
            trimws(format(round(us.map$GOE, digits = 0), big.mark = ",")),
-           "<br><strong>Veteran Population: </strong>",
-           trimws(format(round(us.map$VetPop, digits = 0), big.mark = ",")),
-           "<br><strong>Uniques: </strong>",
-           trimws(format(round(us.map$Uniques, digits = 0), big.mark = ","))
+           "<br><em>*Expenditures are in 000s</em>"
            )
     })
   
   #create a color palette
   # pal <- reactive({
   #   colorQuantile(gdxhelper$divpals[gdxhelper$gdxvars == input$gdxvar],
-  #                 domain = as.numeric(us.map@data[input$gdxvar][,1]),
-  #                 n = 7)
+  #                 domain = us.map@data[input$gdxvar][,1],
+  #                 n=4)
   # })
-  
+  # 
   # pal <- reactive({
   #   colorBin(gdxhelper$divpals[gdxhelper$gdxvars == input$gdxvar],
-  #            domain = as.numeric(us.map@data[input$gdxvar][,1]),
-  #            bins = 20
+  #            domain = us.map@data[input$gdxvar][,1],
+  #            bins = 5,
+  #            pretty = FALSE
   #            )
   # })
   
   pal <- reactive({
     colorNumeric(gdxhelper$divpals[gdxhelper$gdxvars == input$gdxvar],
-             domain = as.numeric(us.map@data[input$gdxvar][,1])
+             domain = us.map@data[input$gdxvar][,1]
     )
   })
   
-  xlabel <- reactive(paste(gdxhelper$gdxlabs[gdxhelper$gdxvars == input$gdxvar], "(in 000s)"))
-
+  #Legend title - get the readable name for the selected variable in lieu of the column name
+  leg.title <- reactive(paste(gdxhelper$gdxlabs[gdxhelper$gdxvars == input$gdxvar]))
+  
+  #Legend key labels
+  leg.key <- reactive({
+    as.character(round(quantile(us.map@data[input$gdxvar][,1], seq(0,1.25,0.25))))
+  })
 
   #and zee leaflet
   output$mymap <- renderLeaflet({
     leaflet(data = us.map)  %>%
       addTiles() %>%
-      addPolygons(fillColor = ~pal()(as.numeric(us.map@data[input$gdxvar][,1])), 
+      addPolygons(fillColor = ~pal()(us.map@data[input$gdxvar][,1]), 
                   fillOpacity = 0.8, 
                   color = "#BDBDC3", 
-                  weight = 1,
+                  weight = 0.5,
                   popup = popup_dat()) %>% 
       addLegend("bottomright", 
                 pal = pal(), 
-                values = ~as.numeric(us.map@data[input$gdxvar][,1]),
-                title = xlabel(),
-                labFormat = labelFormat(prefix = ""),
+                values = ~us.map@data[input$gdxvar][,1],
+                title = leg.title(),
                 opacity = 1) %>% 
       setView(lng = -110.00, lat = 45.00, zoom = 4)
   })

@@ -55,7 +55,7 @@ Patients who received treatment at a VA health care facility. Data are provided 
 
 This application was built in R and RStudio and uses Leaflet - an open-source JavaScript mapping library. This tool could not have been created without the help of the people and resource listed below. You can get [the code for this application on GitHub.](https://github.com/mihiriyer/gdxleaf)
 
-1. [Leaflet for R](https://rstudio.github.io/leaflet/) - The leaflet R package provide an easy way to interface with the Leaflet. 
+1. [Leaflet for R](https://rstudio.github.io/leaflet/) - The leaflet R package provides an easy way to interface with the Leaflet. 
 
 2. [Mapping US Counties in R with FIPS](https://www.datascienceriot.com/mapping-us-counties-in-r-with-fips/kris/) - This lovely tutorial by Kris Eberwein was used to link FIPS code based data to a Census shapefile and to plot maps using ggplot2 and Leaflet. 
 
