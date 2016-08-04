@@ -10,18 +10,10 @@ library(maptools)
 library(scales)
 library(leaflet)
 
-###MAP Setup
-#read census shape file
-us.map <- readOGR(dsn=".", layer="cb_2015_us_county_20m", verbose = FALSE)
-
-# Remove Virgin Islands (78), American Samoa (60) Mariana Islands (69), Micronesia (64), Marshall Islands (68), Palau (70), Minor Islands (74), Alaska (02), Guam (66), Hawaii (15), Puerto Rico (72) == , "02", "72", "66", "15"
-us.map <- us.map[!us.map$STATEFP %in% c("78", "60", "69", "64", "68", "70", "74"),]
-
-
 ##DATA Setup
 #load the R data object of gdxcty - the FY10-15 consolidated, cleanedup, and linked to FIPS code
-gdxcty15 <- readRDS("gdxcty15.rds") 
-#DIVIDE by 1000 to make numbers in MILLIONS and then round all numbers (remove decimal places)
+gdxcty15 <- readRDS("Data_GDXCTY15.rds") 
+#ROUND all numbers (remove decimal places)
 #REMEMBER Expenditures are in 000s and VetPop and Uniques are as-is
 gdxcty15[,8:17] <- round(gdxcty15[,8:17], digits = 0)
 
@@ -32,8 +24,10 @@ gdxcty15 <- mutate(gdxcty15, FIPS=paste(StateFP, CountyFP, sep="")) %>%
 #As of FY15 - Shannon County SD (Fips: 46-113) is now Ogmerge(us.map, county_dat, by.x="GEOID", by.y="FIPS")alala-Lakota County (Fips: 46-102)
 gdxcty15$FIPS[gdxcty15$FIPS == "46113"] <- "46102"
 
-# gdxcty15$GOE[gdxcty15$GOE == 0] <- NA
+#converting NA because General Operating Expenditures only take place in certain locations.
+gdxcty15$GOE[gdxcty15$GOE == 0] <- NA
 # gdxcty15$Cons[gdxcty15$Cons == 0] <- NA
+
 #this helper links the GDX variables to color schemes
 gdxhelper <- data.frame(
   gdxlabs = c("Total Expenditures",
@@ -49,9 +43,16 @@ gdxhelper <- data.frame(
   divpals = c("BrBG", "RdYlBu", "PiYG", "RdGy", "Blues", "PRGn", "RdYlGn","PuOr", "Spectral"),
   stringsAsFactors = FALSE)
 
+###MAP Setup
+#read census shape file
+us.map <- readOGR(dsn=".", layer="cb_2015_us_county_20m", verbose = FALSE)
+
+# Remove Virgin Islands (78), American Samoa (60) Mariana Islands (69), Micronesia (64), Marshall Islands (68), Palau (70), Minor Islands (74), Alaska (02), Guam (66), Hawaii (15), Puerto Rico (72) == , "02", "72", "66", "15"
+us.map <- us.map[!us.map$STATEFP %in% c("78", "60", "69", "64", "68", "70", "74"),]
+
 #merge the gdx data with the spatial object
 us.map <- merge(us.map, gdxcty15, by.x="GEOID", by.y="FIPS")
-rm(gdxcty15)
+# rm(gdxcty15)
 
 # UI - User Interface Setup -----------------------------------------------
 
@@ -132,26 +133,26 @@ server <- function(input, output){
     })
   
   #create a color palette
-  # pal <- reactive({
-  #   colorQuantile(gdxhelper$divpals[gdxhelper$gdxvars == input$gdxvar],
-  #                 domain = us.map@data[input$gdxvar][,1],
-  #                 n=4)
-  # })
-  # 
+  pal <- reactive({
+    colorQuantile(gdxhelper$divpals[gdxhelper$gdxvars == input$gdxvar],
+                  domain = us.map@data[input$gdxvar][,1],
+                  n=4)
+  })
+
   # pal <- reactive({
   #   colorBin(gdxhelper$divpals[gdxhelper$gdxvars == input$gdxvar],
   #            domain = us.map@data[input$gdxvar][,1],
-  #            bins = 5,
-  #            pretty = FALSE
+  #            bins = 4,
+  #            pretty = TRUE
   #            )
   # })
-  
-  pal <- reactive({
-    colorNumeric(gdxhelper$divpals[gdxhelper$gdxvars == input$gdxvar],
-             domain = us.map@data[input$gdxvar][,1]
-    )
-  })
-  
+
+  # pal <- reactive({
+  #   colorNumeric(gdxhelper$divpals[gdxhelper$gdxvars == input$gdxvar],
+  #            domain = us.map@data[input$gdxvar][,1]
+  #   )
+  # })
+
   #Legend title - get the readable name for the selected variable in lieu of the column name
   leg.title <- reactive(paste(gdxhelper$gdxlabs[gdxhelper$gdxvars == input$gdxvar]))
   

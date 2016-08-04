@@ -1,54 +1,79 @@
-### Introduction
+## Introduction
 
 This map-based exploration tool provides a way to look at VA expenditures from fiscal year 2015. Each year the [National Center for Veterans Analysis and Statistics (NCVAS)](http://www.va.gov/vetdata/) publishes a report on the Geographic Distribution of VA Expenditures (GDX). These reports provide a break-out of expenditures for key VA programs by State, County, and Congressional District and go as far back as 1996. You can view the [GDX reports and others on the NCVAS website.](http://www.va.gov/vetdata/Expenditures.asp) 
 
-### Expenditure Data Sources and Notes
+## Expenditure Data Sources 
 
 The expenditure data in the GDX report are compiled from a variety of VA ogranizations/systems. The list below shows all the sources for the expediture data:
 
 1. USASpending.gov for Compensation & Pension (C&P) and Education and Vocational Rehabilitation and Employment (EVRE) Benefits.
-
 2. Veterans Benefits Administration Insurance Center for the Insurance costs.
-
 3. VA's Financial Management System (FMS) for Construction, Medical Research, General Operating Expenses, and certain C&P and Readjustment data.
-
 4. Allocation Resource Center (ARC) for Medical Care costs.
-
 5. Expenditures are rounded to the nearest thousand dollars. For example, values from $0 to $499 are rounded to $0 and values from $500 to $1,000 are rounded to $1.
 
-### Shapefile and FIPS code Source
+## Shapefile and FIPS Code Source
 
 1. The 2010 State and County FIPS codes are used to create the GDX reports. [The FIPS codes were obtained from the U.S. Census Bureau website.](https://www.census.gov/geo/reference/codes/cou.html)
-
 2. The 2015 shapefile used in this application was also obtained from [the U.S. Census (TIGER) website.](https://www.census.gov/geo/maps-data/data/tiger-line.html)
 
-### Compensation & Pension Notes
+## Data Description
 
-These expenditures include dollars for the following programs:
-
-1. Veterans' compensation for service-connected disabilities.
-    
-2. Dependency and indemnity compensation for service-connected deaths.
-    
-3. Veterans' pension for non-service-connected disabilities.
-    
-4. Burial and other benefits to Veterans and their survivors.  		
-       
-### Medical Care Notes
-
-Medical Care expenditures include dollars for medical services, medical administration, facility maintenance, educational support, research support, and other overhead items. Medical Care expenditures do not include dollars for construction or other non-medical support. Medical Care expenditures are allocated to the patient's home location, not the site of care.
-
-### Loan Guaranty Notes
-
-Currently, all "Loan Guaranty" expenditures are attributed to Travis County, TX, where all Loan Guaranty payments are processed. Consequently these expenditures are not shown in the maps. Prior to FY 08, "Loan Guaranty" expenditures were included in the Education & Vocational Rehabilitation and Employment (E&VRE) programs. VA will continue to improve data collection for future GDX reports to better distribute loan expenditures at the state, county and congressional district levels.
-
-### Veteran  Population (VetPop) Notes
+### Veteran  Population (VetPop) 
 
 Veteran population estimates, as of September 30, 2015, are produced by the VA Office of the Actuary (VetPop 2014).	
 
 ### Unique Patients Notes
 
 Patients who received treatment at a VA health care facility. Data are provided by the Allocation Resource Center (ARC).
+
+### Medical Care
+
+Medical Care expenditures include dollars for medical services, medical administration, facility maintenance, educational support, research support, and other overhead items. Medical Care expenditures do not include dollars for construction or other non-medical support. Medical Care expenditures are allocated to the patient's home location, not the site of care.
+
+### Compensation & Pension
+
+These expenditures include dollars for the following programs:
+
+1. Veterans' compensation for service-connected disabilities.
+2. Dependency and indemnity compensation for service-connected deaths.
+3. Veterans' pension for non-service-connected disabilities.
+4. Burial and other benefits to Veterans and their survivors.  		
+
+### Education and Vocational Rehabilitation
+
+Education and Vocational Rehabilitation and Employment (E&VRE) are separate programs but are combined into one category for display purposes in GDX. E&VRE expenditure data for are also obtained from USASpending.gov and include the following categories:
+
+1. Automobile and adaptive equipment
+2. Specially adapted housing 
+3. Survivors’ and Dependents’ Educational Assistance (Chapter 35)
+4. Vocational Rehabilitation for Disabled Veterans (Chapter 31)
+5. Post-Vietnam Era Veterans’ Educational Assistance (Chapter 32)
+6. Montgomery G.I. Bill for Selected Reserves (Chapter 1606)
+7. Reserve Educational Assistance Program (Chapter 1607)
+8. Montgomery G.I. Bill (Chapter 30) 
+9. Post-9/11 Veterans Educational Assistance (Chapter 33)  
+
+### Construction
+
+The Construction expenditures category includes funding for Major Projects, Minor Projects, Grants for Construction of State Extended Care Facilities, and Grants for Construction of State Veterans Cemeteries. The source of the Construction data is the Financial Management System (FMS).
+
+### Insurance and Indemnities
+
+The data reported for this category are provided by the VA Regional Office and Insurance Center (RO&IC) in Philadelphia, Pennsylvania.  
+
+This category consists of VA expenditures for death claims, matured endowments, dividends, cash surrender payments, total disability income provision payments, and total and permanent disability benefits payments. It includes Veterans Group Life Insurance, National Service Life Insurance, Service Disabled Veterans Life Insurance, United States Government Life Insurance, Veterans Reopened Insurance, and Veterans Special Life Insurance. 
+
+It does not include Traumatic Injury Protection Under Servicemembers' Group Life Insurance, Family Servicemembers' Group Life Insurance, or Servicemembers' Group Life Insurance.  The RO&IC provides OPP with monthly extracts of payments to recipients by zip code for the purposes of aggregating these monthly payments by state, county, and Congressional District.
+
+### General Operating Expenditures
+
+General Operating Expenses (GOE) represent the costs necessary to provide administration and oversight for the benefits provided by VA. This includes costs for overhead and human resources. This category does not include payments made directly to beneficiaries. These expenditures are executed at VA facilities. The source of the GOE data is VA's Financial Manangement System.
+       
+### Loan Guaranty
+
+Currently, all "Loan Guaranty" expenditures are attributed to Travis County, TX, where all Loan Guaranty payments are processed. Consequently these expenditures are not shown in the maps. Prior to FY 08, "Loan Guaranty" expenditures were included in the Education & Vocational Rehabilitation and Employment (E&VRE) programs. VA will continue to improve data collection for future GDX reports to better distribute loan expenditures at the state, county and congressional district levels.
+
 
 
 ### Aknowledgements
