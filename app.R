@@ -24,9 +24,10 @@ gdxcty15 <- mutate(gdxcty15, FIPS=paste(StateFP, CountyFP, sep="")) %>%
 #As of FY15 - Shannon County SD (Fips: 46-113) is now Ogmerge(us.map, county_dat, by.x="GEOID", by.y="FIPS")alala-Lakota County (Fips: 46-102)
 gdxcty15$FIPS[gdxcty15$FIPS == "46113"] <- "46102"
 
-#converting NA because General Operating Expenditures only take place in certain locations.
+#converting NA because General Operating Expenditures only take place at VA Facilities.
 gdxcty15$GOE[gdxcty15$GOE == 0] <- NA
-# gdxcty15$Cons[gdxcty15$Cons == 0] <- NA
+#converting to NA because Contruction expenditure only occur where there is actual work going on.
+gdxcty15$Cons[gdxcty15$Cons == 0] <- NA
 
 #this helper links the GDX variables to color schemes
 gdxhelper <- data.frame(
@@ -73,7 +74,7 @@ ui <- navbarPage("VA Expenditures in Fiscal Year 2015",
                                             top = "auto",
                                             left = 200,
                                             right = "auto",
-                                            bottom = 400,
+                                            bottom = 150,
                                             width = 330,
                                             height = "auto",
                                             #HEADER title
@@ -90,8 +91,16 @@ ui <- navbarPage("VA Expenditures in Fiscal Year 2015",
                                                                     "General Operating Expenses" = "GOE",
                                                                     "Veteran Popuation" = "VetPop",
                                                                     "Unique Patients" = "Uniques"),
-                                                        selected = "TotX")
-                              )
+                                                        selected = "TotX"),
+                                            conditionalPanel(condition = "input.gdxvar == 'GOE'", 
+                                                             tags$small(includeMarkdown("notes_goe.md"))
+                                            ),
+                                            conditionalPanel(condition = "input.gdxvar == 'Cons'", 
+                                                             tags$small(includeMarkdown("notes_cons.md"))
+                                            ),
+                                            tags$small(includeMarkdown("notes_interpret.md"))
+                                            
+                                            )
                           )
                           
                  ),
@@ -136,7 +145,7 @@ server <- function(input, output){
   pal <- reactive({
     colorQuantile(gdxhelper$divpals[gdxhelper$gdxvars == input$gdxvar],
                   domain = us.map@data[input$gdxvar][,1],
-                  n=4)
+                  n=5)
   })
 
   # pal <- reactive({
