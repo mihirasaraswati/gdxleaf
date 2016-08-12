@@ -1,9 +1,24 @@
-# gdxleaf
-A Leaflet Based Explorer of VA Expenditure (GDX) Data
+# Introduction
+
+A data exploration application of County level VA Expenditure Data
+
+FY geographic
+
+shiny + leaflet
 
 
-1. where to see/use app
 
-2. instructions to run locally
+# Using the application:
 
-3. data setup link gtihub repo
+This application can be used online by visiting https://mihiriyer.shinyapps.io/gdxleaf/
+
+Alternatively, you run the application locally in RStudio by executing the following command in the console window:
+
+`shiny::runGitHub(repo = 'mihiriyer/gdxleaf')`
+
+
+Data Source:
+
+The used for the map come from the FY 2015 GDX report. The code for preparing the data is another repository which was created to consolidate, standardize, and prepare GDX r 
+
+https://github.com/mihiriyer/gdxdata
