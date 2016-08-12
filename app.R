@@ -13,6 +13,9 @@ library(leaflet)
 ##DATA Setup
 #load the R data object of gdxcty - the FY10-15 consolidated, cleanedup, and linked to FIPS code
 gdxcty15 <- readRDS("Data_GDXCTY15.rds") 
+
+#Subtract Loan from TotX for Travis County, TX 
+gdxcty15$TotX[which(gdxcty15$State == "TX")] <- gdxcty15$TotX[which(gdxcty15$State == "TX")] - gdxcty15$Loan[which(gdxcty15$State == "TX")]
 #ROUND all numbers (remove decimal places)
 #REMEMBER Expenditures are in 000s and VetPop and Uniques are as-is
 gdxcty15[,8:17] <- round(gdxcty15[,8:17], digits = 0)
