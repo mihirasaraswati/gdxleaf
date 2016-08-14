@@ -1,6 +1,6 @@
 ## Introduction
 
-This map-based exploration tool provides a way to look at VA expenditures from fiscal year 2015. Each year the [National Center for Veterans Analysis and Statistics (NCVAS)](http://www.va.gov/vetdata/) publishes a report on the Geographic Distribution of VA Expenditures (GDX). These reports provide a break-out of expenditures for key VA programs by State, County, and Congressional District and go as far back as 1996. You can view the [GDX reports and others on the NCVAS website.](http://www.va.gov/vetdata/Expenditures.asp) 
+This map-based exploration tool provides a way to look at some VA healthcare and benefits expenditures from the fiscal year 2015 GDX Report. Each year the [National Center for Veterans Analysis and Statistics (NCVAS)](http://www.va.gov/vetdata/) publishes a report on the Geographic Distribution of VA Expenditures (GDX). These reports provide a break-out of expenditures for key VA programs by State, County, and Congressional District and go as far back as 1996. You can view the [GDX reports and others on the NCVAS website.](http://www.va.gov/vetdata/Expenditures.asp) This tool maps Medical Care, Compensation & Pension, Education & Vocational Rehabilitation, and Insurance & Indemnities expenditures. Four variables from the report are not available for viewing on the map because they are not distributed by Veteran residences.  
 
 ## Expenditure Data Sources 
 
@@ -17,11 +17,11 @@ The expenditure data in the GDX report are compiled from a variety of VA ograniz
 1. The 2010 State and County FIPS codes are used to create the GDX reports. [The FIPS codes were obtained from the U.S. Census Bureau website.](https://www.census.gov/geo/reference/codes/cou.html)
 2. The 2015 shapefile used in this application was also obtained from [the U.S. Census (TIGER) website.](https://www.census.gov/geo/maps-data/data/tiger-line.html)
 
-## Data Description
+## Mapped GDX Variables
 
 ### Veteran  Population (VetPop) 
 
-Veteran population estimates, as of September 30, 2015, are produced by the VA Office of the Actuary (VetPop 2014).	
+Veteran population estimates are produced by the VA Office of the Actuary (VetPop 2014). The county estimates are as of September 30, 2015 and based on Veteran's residence.
 
 ### Unique Patients Notes
 
@@ -40,7 +40,7 @@ These expenditures include dollars for the following programs:
 3. Veterans' pension for non-service-connected disabilities.
 4. Burial and other benefits to Veterans and their survivors.  		
 
-### Education and Vocational Rehabilitation
+### Education & Vocational Rehabilitation
 
 Education and Vocational Rehabilitation and Employment (E&VRE) are separate programs but are combined into one category for display purposes in GDX. E&VRE expenditure data for are also obtained from USASpending.gov and include the following categories:
 
@@ -54,11 +54,7 @@ Education and Vocational Rehabilitation and Employment (E&VRE) are separate prog
 8. Montgomery G.I. Bill (Chapter 30) 
 9. Post-9/11 Veterans Educational Assistance (Chapter 33)  
 
-### Construction
-
-The Construction expenditures category includes funding for Major Projects, Minor Projects, Grants for Construction of State Extended Care Facilities, and Grants for Construction of State Veterans Cemeteries. The source of the Construction data is the Financial Management System (FMS).
-
-### Insurance and Indemnities
+### Insurance & Indemnities
 
 The data reported for this category are provided by the VA Regional Office and Insurance Center (RO&IC) in Philadelphia, Pennsylvania.  
 
@@ -66,14 +62,21 @@ This category consists of VA expenditures for death claims, matured endowments, 
 
 It does not include Traumatic Injury Protection Under Servicemembers' Group Life Insurance, Family Servicemembers' Group Life Insurance, or Servicemembers' Group Life Insurance.  The RO&IC provides OPP with monthly extracts of payments to recipients by zip code for the purposes of aggregating these monthly payments by state, county, and Congressional District.
 
-### General Operating Expenditures
+## GDX Variable Excluded from the Map 
 
-General Operating Expenses (GOE) represent the costs necessary to provide administration and oversight for the benefits provided by VA. This includes costs for overhead and human resources. This category does not include payments made directly to beneficiaries. These expenditures are executed at VA facilities. The source of the GOE data is VA's Financial Manangement System.
+The GDX variables listed below have been excluded from the map because they are not distributed by Veteran residences. The county estimates are in fact the VA location where the expenditure was processed. The Total Expenditure variable is also not included because it is the sum of all the expenditures including those that are not in terms of Veteran residences and will lead to inequitable comparisons. 
+
+### Construction
+
+The Construction expenditures category includes funding for Major Projects, Minor Projects, Grants for Construction of State Extended Care Facilities, and Grants for Construction of State Veterans Cemeteries. The source of the Construction data is the Financial Management System (FMS). 
+
+### General Operating Expenses (GOE) 
+
+GOE represents the costs necessary to provide administration and oversight for the benefits provided by VA. This includes costs for overhead and human resources. This category does not include payments made directly to beneficiaries. The source of the GOE data is VA's Financial Manangement System.  
        
 ### Loan Guaranty
 
-Currently, all "Loan Guaranty" expenditures are attributed to Travis County, TX, where all Loan Guaranty payments are processed. Consequently these expenditures are not shown in the maps. Prior to FY 08, "Loan Guaranty" expenditures were included in the Education & Vocational Rehabilitation and Employment (E&VRE) programs. VA will continue to improve data collection for future GDX reports to better distribute loan expenditures at the state, county and congressional district levels.
-
+Currently, all "Loan Guaranty" expenditures are attributed to Travis County, TX, where all Loan Guaranty payments are processed. Prior to FY 08, "Loan Guaranty" expenditures were included in the Education & Vocational Rehabilitation and Employment (E&VRE) programs.
 
 
 ### Aknowledgements
