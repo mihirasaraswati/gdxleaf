@@ -1,10 +1,13 @@
+---
+output: word_document
+---
 ## Introduction
 
-This map-based exploration tool provides a way to look at VA healthcare and benefits expenditures from the fiscal year 2015 GDX Report. Each year the [National Center for Veterans Analysis and Statistics (NCVAS)](http://www.va.gov/vetdata/) publishes a report on the Geographic Distribution of VA Expenditures (GDX). These reports provide a break-out of expenditures for key VA programs by State, County, and Congressional District and go as far back as 1996. You can view the [GDX reports and others on the NCVAS website.](http://www.va.gov/vetdata/Expenditures.asp) This tool maps Medical Care, Compensation & Pension, Education & Vocational Rehabilitation, and Insurance & Indemnities expenditures. Four variables from the report are not available for viewing on the map because they are not distributed by Veteran residences.  
+This map-based exploration tool provides a way to look at VA health care and benefits expenditures from the fiscal year 2015 GDX Report. Each year the [National Center for Veterans Analysis and Statistics (NCVAS)](http://www.va.gov/vetdata/) publishes a report on the Geographic Distribution of VA Expenditures (GDX). These reports provide a break-out of expenditures for key VA programs by State, County, and Congressional District and go as far back as 1996. You can view the [GDX reports and others on the NCVAS website.](http://www.va.gov/vetdata/Expenditures.asp) This tool maps Medical Care, Compensation & Pension, Education & Vocational Rehabilitation, and Insurance & Indemnities expenditures. Four variables from the report are not available for viewing on the map because they are not distributed by Veteran residences.  
 
 ## Expenditure Data Sources 
 
-The expenditure data in the GDX report are compiled from a variety of VA ogranizations/systems. The list below shows all the sources for the expediture data:
+The expenditure data in the GDX report are compiled from a variety of VA organizations/systems. The list below shows all the sources for the expenditure data:
 
 1. USASpending.gov for Compensation & Pension (C&P) and Education and Vocational Rehabilitation and Employment (EVRE) Benefits.
 2. Veterans Benefits Administration Insurance Center for the Insurance costs.
@@ -62,7 +65,7 @@ This category consists of VA expenditures for death claims, matured endowments, 
 
 It does not include Traumatic Injury Protection Under Servicemembers' Group Life Insurance, Family Servicemembers' Group Life Insurance, or Servicemembers' Group Life Insurance.  The RO&IC provides OPP with monthly extracts of payments to recipients by zip code for the purposes of aggregating these monthly payments by state, county, and Congressional District.
 
-## GDX Variable Excluded from the Map 
+## GDX Variables Excluded from the Map 
 
 The GDX variables listed below have been excluded from the map because they are not distributed by Veteran residences. The county estimates are in fact the VA location where the expenditure was processed. The Total Expenditure variable is also not included because it is the sum of all the expenditures including those that are not in terms of Veteran residences and will lead to inequitable comparisons. 
 
@@ -72,7 +75,7 @@ The Construction expenditures category includes funding for Major Projects, Mino
 
 ### General Operating Expenses (GOE) 
 
-GOE represents the costs necessary to provide administration and oversight for the benefits provided by VA. This includes costs for overhead and human resources. This category does not include payments made directly to beneficiaries. The source of the GOE data is VA's Financial Manangement System.  
+GOE represents the costs necessary to provide administration and oversight for the benefits provided by VA. This includes costs for overhead and human resources. This category does not include payments made directly to beneficiaries. The source of the GOE data is VA's Financial Management System.  
        
 ### Loan Guaranty
 

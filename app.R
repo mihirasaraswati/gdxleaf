@@ -14,37 +14,28 @@ library(leaflet)
 #load the R data object of gdxcty - the FY10-15 consolidated, cleanedup, and linked to FIPS code
 gdxcty15 <- readRDS("Data_GDXCTY15.rds") 
 
-#Subtract Loan from TotX for Travis County, TX 
-gdxcty15$TotX[which(gdxcty15$State == "TX")] <- gdxcty15$TotX[which(gdxcty15$State == "TX")] - gdxcty15$Loan[which(gdxcty15$State == "TX")]
+#Concatenate StateFP and CountyFP for a unique ID that can be matched with GEOID in us.map
+#drop TotX, Cons, GOE, and Loan not veteran/county based data
+gdxcty15 <- mutate(gdxcty15, FIPS=paste(StateFP, CountyFP, sep="")) %>% 
+  select(c(1, 18, 16, 10, 12,  15, 8, 17))
+
 #ROUND all numbers (remove decimal places)
 #REMEMBER Expenditures are in 000s and VetPop and Uniques are as-is
-gdxcty15[,8:17] <- round(gdxcty15[,8:17], digits = 0)
-
-#Concatenate StateFP and CountyFP for a unique ID that can be matched with GEOID in us.map
-gdxcty15 <- mutate(gdxcty15, FIPS=paste(StateFP, CountyFP, sep="")) %>% 
-  select(c(1, 18, 9, 16, 10, 12, 11, 15,14, 8, 17))
+gdxcty15[,3:8] <- round(gdxcty15[,3:8], digits = 0)
 
 #As of FY15 - Shannon County SD (Fips: 46-113) is now Ogmerge(us.map, county_dat, by.x="GEOID", by.y="FIPS")alala-Lakota County (Fips: 46-102)
 gdxcty15$FIPS[gdxcty15$FIPS == "46113"] <- "46102"
 
-#converting NA because General Operating Expenditures only take place at VA Facilities.
-gdxcty15$GOE[gdxcty15$GOE == 0] <- NA
-#converting to NA because Contruction expenditure only occur where there is actual work going on.
-gdxcty15$Cons[gdxcty15$Cons == 0] <- NA
-
 #this helper links the GDX variables to color schemes
 gdxhelper <- data.frame(
-  gdxlabs = c("Total Expenditures",
-              "Medical Care",
+  gdxlabs = c("Medical Care",
               "Compensation & Pension",
               "Education",
-              "Construction",
               "Insurance & Indemnities",
-              "General Operating Expenses",
               "Veteran Popuation",
               "Unique Patients"),
-  gdxvars = names(gdxcty15[3:11]),
-  divpals = c("BrBG", "RdYlBu", "PiYG", "RdGy", "Blues", "PRGn", "RdYlGn","PuOr", "Spectral"),
+  gdxvars = names(gdxcty15[3:8]),
+  divpals = c("BrBG", "RdYlBu", "PiYG", "PRGn", "RdYlGn","PuOr"),
   stringsAsFactors = FALSE)
 
 ###MAP Setup
@@ -56,7 +47,8 @@ us.map <- us.map[!us.map$STATEFP %in% c("78", "60", "69", "64", "68", "70", "74"
 
 #merge the gdx data with the spatial object
 us.map <- merge(us.map, gdxcty15, by.x="GEOID", by.y="FIPS")
-# rm(gdxcty15)
+#clean up workspace
+rm(gdxcty15)
 
 # UI - User Interface Setup -----------------------------------------------
 
@@ -75,9 +67,9 @@ ui <- navbarPage("VA Expenditures in Fiscal Year 2015",
                                             fixed = TRUE,
                                             draggable = TRUE,
                                             top = "auto",
-                                            left = 200,
+                                            left = 275,
                                             right = "auto",
-                                            bottom = 150,
+                                            bottom = 275,
                                             width = 330,
                                             height = "auto",
                                             #HEADER title
@@ -85,39 +77,30 @@ ui <- navbarPage("VA Expenditures in Fiscal Year 2015",
                                             #drop-down to pick a gdx variable
                                             selectInput(inputId = "gdxvar",
                                                         label = "Select a variable to map",
-                                                        choices = c("Total Expenditures" = "TotX",
-                                                                    "Medical Care" = "MedCare",
+                                                        choices = c("Medical Care" = "MedCare",
                                                                     "Compensation & Pension" = "CP",
                                                                     "Education" = "EduVoc",
-                                                                    "Construction" = "Cons",
                                                                     "Insurance & Indemnities" = "InsInd",
-                                                                    "General Operating Expenses" = "GOE",
                                                                     "Veteran Popuation" = "VetPop",
                                                                     "Unique Patients" = "Uniques"),
-                                                        selected = "TotX"),
-                                            conditionalPanel(condition = "input.gdxvar == 'GOE'", 
-                                                             tags$small(includeMarkdown("notes_goe.md"))
-                                            ),
-                                            conditionalPanel(condition = "input.gdxvar == 'Cons'", 
-                                                             tags$small(includeMarkdown("notes_cons.md"))
-                                            ),
+                                                        selected = "MedCare"),
                                             tags$small(includeMarkdown("notes_interpret.md"))
                                             
-                                            )
+                              )
                           )
                           
                  ),
                  tabPanel(HTML("About</a></li><li><a href=\"https://github.com/mihiriyer/gdxleaf\">Get code"), 
                           div(class="abouttext",
                               includeMarkdown("about.md")) 
-                              )
+                 )
                  
 )
 
 # SERVER logic ------------------------------------------------------------
 
 server <- function(input, output){
-
+  
   # Format popup data for leaflet map.
   popup_dat <- reactive({
     paste0("<strong>County: </strong>",
@@ -126,23 +109,17 @@ server <- function(input, output){
            trimws(format(round(us.map$VetPop, digits = 0), big.mark = ",")),
            "<br><strong>Uniques: </strong>",
            trimws(format(round(us.map$Uniques, digits = 0), big.mark = ",")),
-           "<br><strong>Total: </strong>",
-           trimws(format(round(us.map$TotX, digits = 0), big.mark = ",")),
            "<br><strong>Medical Care: </strong>",
            trimws(format(round(us.map$MedCare, digits = 0), big.mark = ",")),
            "<br><strong>Comp & Pen: </strong>",
            trimws(format(round(us.map$CP, digits = 0), big.mark = ",")),
            "<br><strong>Education: </strong>",
            trimws(format(round(us.map$EduVoc, digits = 0), big.mark = ",")),
-           "<br><strong>Construction: </strong>",
-           trimws(format(round(us.map$Cons, digits = 0), big.mark = ",")),
-           "<br><strong>Insurance: </strong>",
+            "<br><strong>Insurance: </strong>",
            trimws(format(round(us.map$InsInd, digits = 0), big.mark = ",")),
-           "<br><strong>Operations: </strong>",
-           trimws(format(round(us.map$GOE, digits = 0), big.mark = ",")),
            "<br><em>*Expenditures are in 000s</em>"
-           )
-    })
+    )
+  })
   
   #create a color palette
   pal <- reactive({
@@ -150,7 +127,7 @@ server <- function(input, output){
                   domain = us.map@data[input$gdxvar][,1],
                   n=5)
   })
-
+  
   # pal <- reactive({
   #   colorBin(gdxhelper$divpals[gdxhelper$gdxvars == input$gdxvar],
   #            domain = us.map@data[input$gdxvar][,1],
@@ -158,13 +135,13 @@ server <- function(input, output){
   #            pretty = TRUE
   #            )
   # })
-
+  
   # pal <- reactive({
   #   colorNumeric(gdxhelper$divpals[gdxhelper$gdxvars == input$gdxvar],
   #            domain = us.map@data[input$gdxvar][,1]
   #   )
   # })
-
+  
   #Legend title - get the readable name for the selected variable in lieu of the column name
   leg.title <- reactive(paste(gdxhelper$gdxlabs[gdxhelper$gdxvars == input$gdxvar]))
   
@@ -172,7 +149,7 @@ server <- function(input, output){
   leg.key <- reactive({
     as.character(round(quantile(us.map@data[input$gdxvar][,1], seq(0,1.25,0.25))))
   })
-
+  
   #and zee leaflet
   output$mymap <- renderLeaflet({
     leaflet(data = us.map)  %>%
@@ -190,7 +167,7 @@ server <- function(input, output){
       setView(lng = -110.00, lat = 45.00, zoom = 4)
   })
   
-
+  
 }
 
 shinyApp(ui = ui, server = server)
