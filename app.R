@@ -12,19 +12,7 @@ library(leaflet)
 
 ##DATA Setup
 #load the R data object of gdxcty - the FY10-15 consolidated, cleanedup, and linked to FIPS code
-gdxcty15 <- readRDS("Data_GDXCTY15.rds") 
-
-#Concatenate StateFP and CountyFP for a unique ID that can be matched with GEOID in us.map
-#drop TotX, Cons, GOE, and Loan not veteran/county based data
-gdxcty15 <- mutate(gdxcty15, FIPS=paste(StateFP, CountyFP, sep="")) %>% 
-  select(c(1, 18, 16, 10, 12,  15, 8, 17))
-
-#ROUND all numbers (remove decimal places)
-#REMEMBER Expenditures are in 000s and VetPop and Uniques are as-is
-gdxcty15[,3:8] <- round(gdxcty15[,3:8], digits = 0)
-
-#As of FY15 - Shannon County SD (Fips: 46-113) is now Ogmerge(us.map, county_dat, by.x="GEOID", by.y="FIPS")alala-Lakota County (Fips: 46-102)
-gdxcty15$FIPS[gdxcty15$FIPS == "46113"] <- "46102"
+gdxcty15 <- readRDS("Data_Leaf_GDXCTY15.rds") 
 
 #this helper links the GDX variables to color schemes
 gdxhelper <- data.frame(
@@ -34,7 +22,7 @@ gdxhelper <- data.frame(
               "Insurance & Indemnities",
               "Veteran Popuation",
               "Unique Patients"),
-  gdxvars = names(gdxcty15[3:8]),
+  gdxvars = names(gdxcty15[7:12]),
   divpals = c("BrBG", "RdYlBu", "PiYG", "PRGn", "RdYlGn","PuOr"),
   stringsAsFactors = FALSE)
 
@@ -127,20 +115,7 @@ server <- function(input, output){
                   domain = us.map@data[input$gdxvar][,1],
                   n=5)
   })
-  
-  # pal <- reactive({
-  #   colorBin(gdxhelper$divpals[gdxhelper$gdxvars == input$gdxvar],
-  #            domain = us.map@data[input$gdxvar][,1],
-  #            bins = 4,
-  #            pretty = TRUE
-  #            )
-  # })
-  
-  # pal <- reactive({
-  #   colorNumeric(gdxhelper$divpals[gdxhelper$gdxvars == input$gdxvar],
-  #            domain = us.map@data[input$gdxvar][,1]
-  #   )
-  # })
+
   
   #Legend title - get the readable name for the selected variable in lieu of the column name
   leg.title <- reactive(paste(gdxhelper$gdxlabs[gdxhelper$gdxvars == input$gdxvar]))
