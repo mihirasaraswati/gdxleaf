@@ -22,7 +22,7 @@ gdxhelper <- data.frame(
               "Insurance & Indemnities",
               "Veteran Popuation",
               "Unique Patients"),
-  gdxvars = names(gdxcty15[7:12]),
+  gdxvars = names(gdxcty15[8:13]),
   divpals = c("BrBG", "RdYlBu", "PiYG", "PRGn", "RdYlGn","PuOr"),
   stringsAsFactors = FALSE)
 

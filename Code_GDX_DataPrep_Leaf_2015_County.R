@@ -128,13 +128,13 @@ rm(cntyfips)
 #Concatenate StateFP and CountyFP for a unique ID that can be matched with GEOID in us.map
 #drop TotX, Cons, GOE, and Loan not veteran/county based data
 gdxcty15 <- mutate(gdxcty15, FIPS=paste(StateFP, CountyFP, sep="")) %>% 
-  select(c(1, 17, 13:16, 11, 5, 7, 10, 3, 12)) %>% 
+  select(c(1, 2, 17, 13:16, 11, 5, 7, 10, 3, 12)) %>% 
   #sort by StateFP and CountyFP
   arrange(StateFP, CountyFP)
 
 #ROUND all numbers (remove decimal places)
 #REMEMBER Expenditures are in 000s and VetPop and Uniques are as-is
-gdxcty15[,7:12] <- round(gdxcty15[,7:12], digits = 0)
+gdxcty15[,8:13] <- round(gdxcty15[,8:13], digits = 0)
 
 #As of FY15 - Shannon County SD (Fips: 46-113) is now Ogmerge(us.map, county_dat, by.x="GEOID", by.y="FIPS")alala-Lakota County (Fips: 46-102)
 gdxcty15$FIPS[gdxcty15$FIPS == "46113"] <- "46102"
