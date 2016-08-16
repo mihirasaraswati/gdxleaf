@@ -58,7 +58,7 @@ ui <- navbarPage("VA Expenditures in Fiscal Year 2015",
                                             left = 275,
                                             right = "auto",
                                             bottom = 275,
-                                            width = 330,
+                                            width = 275,
                                             height = "auto",
                                             #HEADER title
                                             h2("GDX Variables"),
